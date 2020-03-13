@@ -1,0 +1,20 @@
+Message stats for scenario Haggle3-L=15
+sim_time: 274883.0000
+created: 41
+started: 1115
+relayed: 804
+aborted: 311
+dropped: 0
+removed: 0
+delivered: 39
+delivery_prob: 0.9512
+response_prob: 0.0000
+overhead_ratio: 19.6154
+latency_avg: 67009.8974
+latency_med: 76874.0000
+hopcount_avg: 3.0769
+hopcount_med: 3
+buffertime_avg: NaN
+buffertime_med: NaN
+rtt_avg: NaN
+rtt_med: NaN

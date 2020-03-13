@@ -1,0 +1,92 @@
+## Scenario settings
+Scenario.name = Reality-%%DecisionEngineRouterImproved.initiator%%
+Scenario.simulateConnections = false
+Scenario.updateInterval = 1
+# 43200s == 12h
+Scenario.endTime = 16981816
+#274883 Haggle
+
+# "Bluetooth" interface for all nodes
+btInterface.type = SimpleBroadcastInterface
+# Transmit speed of 2 Mbps = 250kBps
+btInterface.transmitSpeed = 250k
+btInterface.transmitRange = 10
+  
+# Define 6 different node groups
+Scenario.nrofHostGroups = 2
+
+# activeTimes: Time intervals when the nodes in the group are active (start1, end1, start2, end2, ...)
+
+# Common settings for all groups
+Group.movementModel = StationaryMovement
+
+Group.router = DecisionEngineRouterImproved
+DecisionEngineRouterImproved.decisionEngine = estimator.SprayandWaitDE
+DecisionEngineRouterImproved.nrofCopies = 30
+DecisionEngineRouterImproved.binaryMode = true
+DecisionEngineRouterImproved.initiator = 10
+
+## TTL 24 hours=1440, 1 week= 10080, 3 weeks= 30240
+Group.msgTtl = 900
+Group.nrofInterfaces = 1
+Group.interface1 = btInterface
+Group.bufferSize = 10M
+
+Group1.groupID = A
+Group1.waitTime = 0, 120
+Group1.speed = 0.5, 1.5
+Group1.nodeLocation = 10, 10
+Group1.nrofHosts = 49
+
+Group2.groupID = B
+Group2.waitTime = 0, 120
+Group2.speed = 0.5, 1.5
+Group2.nodeLocation = 10, 10
+Group2.nrofHosts = 48
+
+
+## Message creation parameters 
+# How many event generators
+Events.nrof = 2
+# Class of the first event generator
+Events1.class = ExternalEventsQueue
+Events1.filePath = scenario/RealityConnectionTraceFinal.txt
+
+Events2.class = MessageEventGenerator
+#Events2.interval = 25,35
+Events2.interval = 100000, 100200
+Events2.size = 10k 
+Events2.hosts = 0, 96
+Events2.prefix = M
+#Events2.time = 0, 244883‬
+#dikurang 30000
+# 0, 35 Haggle Cam
+# 0,40 Haggle
+# 0,96 Reality
+
+
+## Movement model settings
+MovementModel.rngSeed = 1
+#MovementModel.worldSize = 300, 300
+MovementModel.worldSize = 150, 150
+MovementModel.warmup = 1000
+
+## Map based movement -movement model specific settings
+#MapBasedMovement.nrofMapFiles = 4
+
+#MapBasedMovement.mapFile1 = data/roads.wkt
+#MapBasedMovement.mapFile2 = data/main_roads.wkt
+#MapBasedMovement.mapFile3 = data/pedestrian_paths.wkt
+#MapBasedMovement.mapFile4 = data/shops.wkt
+
+## Reports - all report names have to be valid report classes
+
+# how many reports to load
+Report.nrofReports = 4
+Report.warmup = 0
+Report.reportDir = reports/tesUdev/Reality
+
+Report.report1 = MarkNode
+Report.report2 = ConvergenceTimeReport
+Report.report3 = MessageStatsReport
+Report.report4 = InitiatorCheck
