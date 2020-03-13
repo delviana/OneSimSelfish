@@ -8,19 +8,26 @@ package routing.selfishness;
 /**
  *
  * @author Jarkom
+ * @param <sID>
+ * @param <rID>
+ * @param <sComm>
+ * @param <rComm>
+ * @param <time>
  */
-public class ListPastReceive_I<sID, rID, sComm, rComm> {
+public class ListPastReceive_I<sID, rID, sComm, rComm, time> {
 
-    private sID senderID;
-    private rID receiverID;
-    private sComm senderComm;
-    private rComm receiverComm;
+    private final sID senderID;
+    private final rID receiverID;
+    private final sComm senderComm;
+    private final rComm receiverComm;
+    private final time timeOfContact;
 
-    public ListPastReceive_I(sID senderID, rID receiverID, sComm senderComm, rComm receiverComm) {
+    public ListPastReceive_I(sID senderID, rID receiverID, sComm senderComm, rComm receiverComm, time timeOfContact) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.senderComm = senderComm;
         this.receiverComm = receiverComm;
+        this.timeOfContact = timeOfContact;
     }
 
     public sID getSenderID() {
@@ -38,9 +45,13 @@ public class ListPastReceive_I<sID, rID, sComm, rComm> {
     public rComm getReceiverComm() {
         return receiverComm;
     }
+    public time getTimeOfContact() {
+        return timeOfContact;
+    }
 
     @Override
     public String toString() {
-        return senderID.toString() + ":" + receiverID.toString() + ":" + senderComm.toString() + ":" + receiverComm.toString();
+        return senderID.toString() + ":" + receiverID.toString() + ":" + senderComm.toString() + ":" + receiverComm.toString()
+                + ":" + timeOfContact.toString();
     }
 }

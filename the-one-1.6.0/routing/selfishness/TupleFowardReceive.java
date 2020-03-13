@@ -19,8 +19,8 @@ public class TupleFowardReceive {
     public ListPastReceive_I receive_i ;/**
              * Standard constructor that assigns s to start and e to end.
              *
-             * @param s Initial start value
-             * @param e Initial end value
+             * @param o Initial forward value
+             * @param i Initial receive value
              */
 
     public TupleFowardReceive(ListPastForwards_O o, ListPastReceive_I i) {
