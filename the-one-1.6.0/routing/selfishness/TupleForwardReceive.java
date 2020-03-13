@@ -11,20 +11,20 @@ package routing.selfishness;
  */
 public class TupleForwardReceive {
 
-    public ListPastForwards_O foward_o;
+    public ListPastForwards_O forward_o;
 
     /**
      * The end value
      */
     public ListPastReceive_I receive_i ;/**
-             * Standard constructor that assigns s to start and e to end.
+             * Standard constructor that assigns o to forward and i to receive.
              *
              * @param o Initial forward value
              * @param i Initial receive value
              */
 
     public TupleForwardReceive(ListPastForwards_O o, ListPastReceive_I i) {
-        foward_o = o;
+        forward_o = o;
         receive_i = i;
     }
 }
