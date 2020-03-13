@@ -5,53 +5,52 @@
  */
 package routing.selfishness;
 
+import core.DTNHost;
+import routing.community.CommunityDetection;
+
 /**
  *
  * @author Jarkom
- * @param <sID>
- * @param <rID>
- * @param <sComm>
- * @param <rComm>
- * @param <time>
  */
-public class ListPastForwards_O <sID, rID, sComm, rComm, time> {
-    private final sID senderID;
-    private final rID receiverID;
-    private final sComm senderComm;
-    private final rComm receiverComm;
-    private final time timeOfContact;
-    
-    public ListPastForwards_O(sID senderID, rID receiverID, sComm senderComm, rComm receiverComm, time timeOfContact){
+public class ListPastForwards_O {
+
+    private final DTNHost senderID;
+    private final DTNHost receiverID;
+    private final CommunityDetection senderComm;
+    private final CommunityDetection receiverComm;
+    private final Double timeOfContact;
+
+    public DTNHost getSenderID() {
+        return senderID;
+    }
+
+    public DTNHost getReceiverID() {
+        return receiverID;
+    }
+
+    public CommunityDetection getSenderComm() {
+        return senderComm;
+    }
+
+    public CommunityDetection getReceiverComm() {
+        return receiverComm;
+    }
+
+    public Double getTimeOfContact() {
+        return timeOfContact;
+    }
+
+    public ListPastForwards_O(DTNHost senderID, DTNHost receiverID, CommunityDetection senderComm, CommunityDetection receiverComm, Double timeOfContact) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.senderComm = senderComm;
         this.receiverComm = receiverComm;
         this.timeOfContact = timeOfContact;
     }
-    
-    public sID getSenderID(){
-        return senderID;
-    }
-    
-    public rID getReceiverID(){
-        return receiverID;
-    }
-    
-    public sComm getSenderComm (){
-        return senderComm;
-    }
-    
-    public rComm getReceiverComm(){
-        return receiverComm;
-    }
-    public time getTimeOfContact(){
-        return timeOfContact;
-    }
-    
-    
+
     @Override
-    public String toString(){
-        return senderID.toString() + ":" + receiverID.toString() + ":" + senderComm.toString() + ":" + receiverComm.toString() 
+    public String toString() {
+        return senderID.toString() + ":" + receiverID.toString() + ":" + senderComm.toString() + ":" + receiverComm.toString()
                 + ":" + timeOfContact.toString();
     }
 }

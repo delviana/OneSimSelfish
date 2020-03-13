@@ -46,12 +46,13 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
     //inisialisasi centrality
     protected Centrality centrality;
     protected DTNHost thisHosts;
-    
+
     protected Map<ListPastForwards_O, ListPastReceive_I> exChange;
     protected PastForwards_O past_O;
     protected PastReceive_I past_I;
     protected ListPastForwards_O pastO;
     protected ListPastReceive_I pastI;
+    protected TupleForwardReceive tuple;
 //    protected DTNHost thishost;
 
     private double currentEnergy;
@@ -73,78 +74,84 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
             this.community = new SimpleCommunityDetection(s);
         }
     }
-    
+
     public BubbleRapSelfishNode(BubbleRapSelfishNode proto) {
         this.community = proto.community.replicate();
         startTimestamps = new HashMap<DTNHost, Double>();
         connHistory = new HashMap<DTNHost, List<Duration>>();
     }
-    
+
     @Override
     //pertama kali koneksi dibangun
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
         thisHosts = thisHost;
         //cek baterai level dari kedua node baik thisHost maupun peer apakah diatas thr=misalnya 7000
-//        if ((getEnergy(thisHost) > 7000) && (getEnergy(peer) > 7000)) {
-        //exchange ListPastForwards_O dan ListPastReceive_I
-//            this.exChange.put(pastO, pastI);
-        //exchange = keep only the most recent contact
+        if ((getEnergy(thisHost) > 7000) && (getEnergy(peer) > 7000)) {
+            //exchange ListPastForwards_O dan ListPastReceive_I
+            CommunityDetection peerCD = this.getOtherDecisionEngine(peer).community;
+            ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
+            ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
 
-        //exhange battery level and metadata of message carried
-        //compute utilities of each message (perceived altruism value of the message
-        //with he regard to the peer.
-        //bila batery level tidak lebih besar dari 7000/threshold, maka            
-//        } else {
-        //tidak terjadi pertukaran atau Conectiondown
+            tuple = new TupleForwardReceive(O, I);
+            this.exChange.put(pastO, pastI);
+            //exchange = keep only the most recent contact
+
+            //exhange battery level and metadata of message carried
+            //compute utilities of each message (perceived altruism value of the message
+            //with he regard to the peer.
+            //bila batery level tidak lebih besar dari 7000/threshold, maka            
+        } else {
+            //tidak terjadi pertukaran atau Conectiondown
 //            double time = startTimestamps.get(peer);
 //            double etime = SimClock.getTime();
-//        }
+        }
     }
-    
+
     @Override
     public void connectionDown(DTNHost thisHost, DTNHost peer) {
         double time = startTimestamps.get(peer);
         double etime = SimClock.getTime();
 //        System.out.println(getInitialEnergy(thisHost));
     }
-    
+
     @Override
     public void doExchangeForNewConnection(Connection con, DTNHost peer) {
         DTNHost myHost = con.getOtherNode(peer);
         BubbleRapSelfishNode de = this.getOtherDecisionEngine(peer);
-        
+
         this.startTimestamps.put(peer, SimClock.getTime());
         de.startTimestamps.put(myHost, SimClock.getTime());
-        
+
         this.community.newConnection(myHost, peer, de.community);
 
         //pastO(myHost,peer, this.community, de.community)
 //        this.past_O.newConnection(myHost, peer, de.past_O);
 //        de.past_I.newConnection(peer, myHost, this.past_I);
     }
-    
+
     @Override
     public boolean newMessage(Message m) {
         return true;
     }
-    
+
     @Override
     public boolean isFinalDest(Message m, DTNHost aHost) {
         return m.getTo() == aHost;
     }
-    
+
     @Override
     public boolean shouldSaveReceivedMessage(Message m, DTNHost thisHost) {
         return m.getTo() != thisHost;
     }
-    
+
+    @Override
     public boolean shouldSendMessageToHost(Message m, DTNHost otherHost) {
         if (m.getTo() == otherHost) {
             return true;
         }
         DTNHost dest = m.getTo();
         BubbleRapSelfishNode de = getOtherDecisionEngine(otherHost);
-        
+
         boolean peerInCommunity = de.commumesWithHost(dest); // apakh peer di dlm community nya dest
         boolean meInCommunity = this.commumesWithHost(dest); // apakh THIS ada di community nya dest
 
@@ -161,18 +168,17 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
         }
         Double me = getEnergy(thisHosts);
         Double peer = getEnergy(otherHost);
-        System.out.println("me = " + me+" peer = "+peer);
-        
+        System.out.println("me = " + me + " peer = " + peer);
+
 //        System.out.println(getInitialEnergy(dest));
 //        System.out.println(getBuffer(dest));
 //        System.out.println(getEnergy(dest));
 //        System.out.println(getResidualEnergy(dest));
 //        System.out.println(getResidualBuffer(dest));
-
 //        return ((me > 9000) && (peer > 9000));
         return true;
     }
-    
+
     @Override
     public boolean shouldDeleteSentMessage(Message m, DTNHost otherHost) {
         // delete the message once it is forwarded to the node in the dest'community
@@ -180,7 +186,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
         return de.commumesWithHost(m.getTo())
                 && !this.commumesWithHost(m.getTo());
     }
-    
+
     @Override
     public boolean shouldDeleteOldMessage(Message m, DTNHost hostReportingOld) {
 //        BubbleRapSelfishNode de = this.getOtherDecisionEngine(hostReportingOld);
@@ -189,47 +195,47 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
 
         return true;
     }
-    
+
     @Override
     public RoutingDecisionEngine replicate() {
         return new BubbleRapSelfishNode(this);
     }
-    
+
     @Override
     public void moduleValueChanged(String key, Object newValue) {
         this.currentEnergy = (Double) newValue;
     }
-    
+
     private BubbleRapSelfishNode getOtherDecisionEngine(DTNHost peer) {
         MessageRouter otherRouter = peer.getRouter();
         assert otherRouter instanceof DecisionEngineRouter : "This router only works "
                 + " with other routers of same type";
-        
+
         return (BubbleRapSelfishNode) ((DecisionEngineRouter) otherRouter).getDecisionEngine();
     }
-    
+
     private Double getEnergy(DTNHost host) {
         return (Double) host.getComBus().getProperty(routing.util.EnergyModel.ENERGY_VALUE_ID);
     }
-    
+
     private Double getInitialEnergy(DTNHost h) {
 //        System.out.println(getInitialEnergy(h));
         return (Double) h.getComBus().getProperty(routing.util.EnergyModel.INIT_ENERGY_S);
     }
-    
+
     private Double getBuffer(DTNHost h) {
         return Double.valueOf(h.getRouter().getFreeBufferSize());
-        
+
     }
-    
+
     private Double getResidualBuffer(DTNHost h) {
         Double bfAwal = Double.valueOf(h.getRouter().getBufferSize());
         Double bfAkhir = getBuffer(h);
         Double residualBuffer = bfAkhir / bfAwal;
-        
+
         return residualBuffer;
     }
-    
+
     private Double getResidualEnergy(DTNHost h) {
         Double eAwal = getInitialEnergy(h);
         Double eAkhir = getEnergy(h);
@@ -242,7 +248,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
         //altruism (N,M) = type (M, o.m * thr (o.b) dijumlahkan dengan type(M, i.m * thr (i.b)
         return null;
     }
-    
+
     public Double getAltruismValue(DTNHost thisHost, DTNHost peer) {
         //cek apakah nilai altruism yang dihasilkan lebih dari treshold
         //if (altruism (peer,M) > threshold
@@ -251,26 +257,26 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
 
         return null;
     }
-    
+
     protected boolean commumesWithHost(DTNHost dest) {
         return community.isHostInCommunity(dest);
     }
-    
+
     protected double getLocalCentrality() {
         return this.centrality.getLocalCentrality(connHistory, community);
     }
-    
+
     public Set<DTNHost> getLocalCommunity() {
         return this.community.getLocalCommunity();
     }
-    
+
     public boolean shouldSendMessageToHost(Message m, DTNHost otherHost, DTNHost thisHost) {
         if (m.getTo() == otherHost) {
             return true;
         }
         DTNHost dest = m.getTo();
         BubbleRapSelfishNode de = getOtherDecisionEngine(otherHost);
-        
+
         boolean peerInCommunity = de.commumesWithHost(dest); // apakh peer di dlm community nya dest
         boolean meInCommunity = this.commumesWithHost(dest); // apakh THIS ada di community nya dest
 
@@ -292,5 +298,5 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
 //        return (me
         return true;
     }
-    
+
 }

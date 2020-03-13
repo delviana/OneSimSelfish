@@ -5,48 +5,47 @@
  */
 package routing.selfishness;
 
+import core.DTNHost;
+import routing.community.CommunityDetection;
+
 /**
  *
  * @author Jarkom
- * @param <sID>
- * @param <rID>
- * @param <sComm>
- * @param <rComm>
- * @param <time>
  */
-public class ListPastReceive_I<sID, rID, sComm, rComm, time> {
+public class ListPastReceive_I {
 
-    private final sID senderID;
-    private final rID receiverID;
-    private final sComm senderComm;
-    private final rComm receiverComm;
-    private final time timeOfContact;
+    private final DTNHost senderID;
+    private final DTNHost receiverID;
+    private final CommunityDetection senderComm;
+    private final CommunityDetection receiverComm;
+    private final Double timeOfContact;
 
-    public ListPastReceive_I(sID senderID, rID receiverID, sComm senderComm, rComm receiverComm, time timeOfContact) {
+    public DTNHost getSenderID() {
+        return senderID;
+    }
+
+    public DTNHost getReceiverID() {
+        return receiverID;
+    }
+
+    public CommunityDetection getSenderComm() {
+        return senderComm;
+    }
+
+    public CommunityDetection getReceiverComm() {
+        return receiverComm;
+    }
+
+    public Double getTimeOfContact() {
+        return timeOfContact;
+    }
+
+    public ListPastReceive_I(DTNHost senderID, DTNHost receiverID, CommunityDetection senderComm, CommunityDetection receiverComm, Double timeOfContact) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.senderComm = senderComm;
         this.receiverComm = receiverComm;
         this.timeOfContact = timeOfContact;
-    }
-
-    public sID getSenderID() {
-        return senderID;
-    }
-
-    public rID getReceiverID() {
-        return receiverID;
-    }
-
-    public sComm getSenderComm() {
-        return senderComm;
-    }
-
-    public rComm getReceiverComm() {
-        return receiverComm;
-    }
-    public time getTimeOfContact() {
-        return timeOfContact;
     }
 
     @Override
