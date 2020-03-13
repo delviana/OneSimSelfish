@@ -244,18 +244,21 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
     }
 
     //hitung nilai altruism
-    public Double getAltruism(DTNHost h) {
+    public Double getAltruism(DTNHost h, Message m) {
         //altruism (N,M) = type (M, o.m * thr (o.b) dijumlahkan dengan type(M, i.m * thr (i.b)
+        Double altruism;
+        altruism = thisHosts.getAddress() * getEnergy(h);
         return null;
     }
 
-    public Double getAltruismValue(DTNHost thisHost, DTNHost peer) {
+    public boolean getAltruismValue(DTNHost thisHost, DTNHost peer, Message m) {
         //cek apakah nilai altruism yang dihasilkan lebih dari treshold
         //if (altruism (peer,M) > threshold
         //        return true
         //maka forward message
+        
+        return getAltruism(peer, m) > getEnergy(peer);
 
-        return null;
     }
 
     protected boolean commumesWithHost(DTNHost dest) {
