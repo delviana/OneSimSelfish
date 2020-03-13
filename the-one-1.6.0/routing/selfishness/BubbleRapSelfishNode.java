@@ -159,9 +159,9 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
             // Forward to the one with the higher local centrality (in dest'community)
 
         }
-        Double me = de.getEnergy(otherHost);
-        Double peer = this.getEnergy(otherHost);
-//        System.out.println("me = " + me+" peer = "+peer);
+        Double me = getEnergy(thisHosts);
+        Double peer = getEnergy(otherHost);
+        System.out.println("me = " + me+" peer = "+peer);
         
 //        System.out.println(getInitialEnergy(dest));
 //        System.out.println(getBuffer(dest));
@@ -169,8 +169,8 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
 //        System.out.println(getResidualEnergy(dest));
 //        System.out.println(getResidualBuffer(dest));
 
-        return ((me > 7000) && (peer > 7000));
-//        return true;
+//        return ((me > 9000) && (peer > 9000));
+        return true;
     }
     
     @Override
