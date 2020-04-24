@@ -20,6 +20,7 @@ import routing.MessageRouter;
 import routing.RoutingDecisionEngine;
 import routing.community.Centrality;
 import routing.community.CommunityDetection;
+import routing.community.CommunityDetectionEngine;
 import routing.community.Duration;
 import routing.community.SimpleCommunityDetection;
 
@@ -27,7 +28,7 @@ import routing.community.SimpleCommunityDetection;
  *
  * @author Jarkom
  */
-public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommunicationListener {
+public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDetectionEngine{
 
     //setting ID untuk setting algoritma deteksi Komunitas : setting id {@value{}
     public static final String COMMUNITY_ALG_SETTING = "communityDetectAlg";
@@ -201,7 +202,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, ModuleCommun
         return new BubbleRapSelfishNode(this);
     }
 
-    @Override
     public void moduleValueChanged(String key, Object newValue) {
         this.currentEnergy = (Double) newValue;
     }
