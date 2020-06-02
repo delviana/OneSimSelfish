@@ -49,6 +49,7 @@ public class ContactTimesReport extends Report implements ConnectionListener {
 		this.nrofContacts = new Vector<Integer>();
 	}
 		
+        @Override
 	public void hostsConnected(DTNHost host1, DTNHost host2) {
 		if (isWarmup()) {
 			return;
@@ -56,6 +57,7 @@ public class ContactTimesReport extends Report implements ConnectionListener {
 		addConnection(host1, host2);
 	}
 
+        @Override
 	public void hostsDisconnected(DTNHost host1, DTNHost host2) {
 		newEvent();
 		ConnectionInfo ci = removeConnection(host1, host2);

@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package report;
 
 import core.DTNHost;
@@ -16,7 +21,6 @@ import routing.community.DegreeDetectionEngine;
  * @author Acer
  */
 public class ReportSelfish extends Report{
-    
     
     public ReportSelfish(){
         init();
@@ -39,6 +43,7 @@ public class ReportSelfish extends Report{
             TupleDecisionEngine tp = (TupleDecisionEngine) de;
             Map<DTNHost, List<TupleForwardReceive>> aTuple = tp.getTuple();
 
+            
         }
         super.done();
     }
