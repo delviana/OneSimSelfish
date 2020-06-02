@@ -77,8 +77,7 @@ public class DistributedBubbleRap
 	 * 
 	 * @param s Settings to configure the object
 	 */
-	public DistributedBubbleRap(Settings s)
-	{
+	public DistributedBubbleRap(Settings s){
 		if(s.contains(COMMUNITY_ALG_SETTING))
 			this.community = (CommunityDetection) 
 				s.createIntializedObject(s.getSetting(COMMUNITY_ALG_SETTING));
@@ -98,14 +97,14 @@ public class DistributedBubbleRap
 	 * 
 	 * @param proto Prototype DistributedBubbleRap upon which to base this object
 	 */
-	public DistributedBubbleRap(DistributedBubbleRap proto)
-	{
+	public DistributedBubbleRap(DistributedBubbleRap proto){
 		this.community = proto.community.replicate();
 		this.centrality = proto.centrality.replicate();
 		startTimestamps = new HashMap<DTNHost, Double>();
 		connHistory = new HashMap<DTNHost, List<Duration>>();
 	}
 
+        @Override
 	public void connectionUp(DTNHost thisHost, DTNHost peer){}
 
 	/**
@@ -114,8 +113,8 @@ public class DistributedBubbleRap
 	 * 
 	 * @see routing.RoutingDecisionEngine#doExchangeForNewConnection(core.Connection, core.DTNHost)
 	 */
-	public void doExchangeForNewConnection(Connection con, DTNHost peer)
-	{
+        @Override
+	public void doExchangeForNewConnection(Connection con, DTNHost peer){
 		DTNHost myHost = con.getOtherNode(peer);
 		DistributedBubbleRap de = this.getOtherDecisionEngine(peer);
 		
@@ -125,15 +124,14 @@ public class DistributedBubbleRap
 		this.community.newConnection(myHost, peer, de.community);
 	}
 	
-	public void connectionDown(DTNHost thisHost, DTNHost peer)
-	{
+        @Override
+	public void connectionDown(DTNHost thisHost, DTNHost peer){
 		double time = startTimestamps.get(peer);
 		double etime = SimClock.getTime();
 		
 		// Find or create the connection history list
 		List<Duration> history;
-		if(!connHistory.containsKey(peer))
-		{
+		if(!connHistory.containsKey(peer)){
 			history = new LinkedList<Duration>();
 			connHistory.put(peer, history);
 		}

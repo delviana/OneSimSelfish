@@ -17,6 +17,7 @@ import routing.community.DegreeDetectionEngine;
  */
 public class ReportSelfish extends Report{
     
+    
     public ReportSelfish(){
         init();
     }

@@ -65,14 +65,12 @@ public class KCliqueCommunityDetection implements CommunityDetection
 	protected double k;
 	protected double familiarThreshold;
 	
-	public KCliqueCommunityDetection(Settings s)
-	{
+	public KCliqueCommunityDetection(Settings s){
 		this.k = s.getDouble(K_SETTING);
 		this.familiarThreshold = s.getDouble(FAMILIAR_SETTING);
 	}
 	
-	public KCliqueCommunityDetection(KCliqueCommunityDetection proto)
-	{
+	public KCliqueCommunityDetection(KCliqueCommunityDetection proto){
 		this.k = proto.k;
 		this.familiarThreshold = proto.familiarThreshold;
 		familiarSet = new HashSet<DTNHost>();
@@ -80,9 +78,8 @@ public class KCliqueCommunityDetection implements CommunityDetection
 		this.familiarsOfMyCommunity = new HashMap<DTNHost, Set<DTNHost>>();
 	}
 	
-	public void newConnection(DTNHost myHost, DTNHost peer, 
-			CommunityDetection peerCD)
-	{
+        @Override
+	public void newConnection(DTNHost myHost, DTNHost peer,CommunityDetection peerCD){
 		KCliqueCommunityDetection scd = (KCliqueCommunityDetection)peerCD;
 		
 		// Ensure each node is in its own local community
@@ -108,8 +105,7 @@ public class KCliqueCommunityDetection implements CommunityDetection
 		 */
 		
 		// Add peer to my local community if needed
-		if(!this.localCommunity.contains(peer))
-		{
+		if(!this.localCommunity.contains(peer)){
 			/*
 			 * 
 			 */
@@ -121,15 +117,13 @@ public class KCliqueCommunityDetection implements CommunityDetection
 					count++;
 			
 			// if peer familiar has K nodes in common with this host's local community
-			if(count >= this.k - 1)
-			{
+			if(count >= this.k - 1){
 				this.localCommunity.add(peer);
 				this.familiarsOfMyCommunity.put(peer, scd.familiarSet);
 				
 				// search the peer's local community for other nodes with K in common
 				// (like a transitivity property)
-				for(DTNHost h : scd.localCommunity)
-				{
+				for(DTNHost h : scd.localCommunity){
 					if(h == myHost || h == peer) continue;
 					
 					// compute intersection size
@@ -139,8 +133,7 @@ public class KCliqueCommunityDetection implements CommunityDetection
 							count++;
 					
 					// add nodes if there are K in common with this local community
-					if(count >= this.k - 1)
-					{
+					if(count >= this.k - 1){
 						this.localCommunity.add(h);
 						this.familiarsOfMyCommunity.put(h, 
 								scd.familiarsOfMyCommunity.get(h));
@@ -150,26 +143,22 @@ public class KCliqueCommunityDetection implements CommunityDetection
 		}
 		
 		// Repeat process from peer's perspective
-		if(!scd.localCommunity.contains(myHost))
-		{
+		if(!scd.localCommunity.contains(myHost)){
 			int count = 0;
 			for(DTNHost h : this.familiarSet)
 				if(scd.localCommunity.contains(h))
 					count++;
-			if(count >= scd.k - 1)
-			{
+			if(count >= scd.k - 1){
 				scd.localCommunity.add(myHost);
 				scd.familiarsOfMyCommunity.put(myHost, this.familiarSet);
 				
-				for(DTNHost h : this.localCommunity)
-				{
+				for(DTNHost h : this.localCommunity){
 					if(h == myHost || h == peer) continue;
 					count = 0;
 					for(DTNHost i : this.familiarsOfMyCommunity.get(h))
 						if(scd.localCommunity.contains(i))
 							count++;
-					if(count >= scd.k - 1)
-					{
+					if(count >= scd.k - 1){
 						scd.localCommunity.add(h);
 						scd.familiarsOfMyCommunity.put(h, 
 								this.familiarsOfMyCommunity.get(h));
@@ -179,23 +168,20 @@ public class KCliqueCommunityDetection implements CommunityDetection
 		}
 	}
 	
-	public void connectionLost(DTNHost myHost, DTNHost peer, 
-			CommunityDetection peerCD, List<Duration> history)
-	{
+        @Override
+	public void connectionLost(DTNHost myHost, DTNHost peer,CommunityDetection peerCD, List<Duration> history){
 		if(this.familiarSet.contains(peer)) return;
 		
 		// Compute cummulative contact duration with this peer
 		Iterator<Duration> i = history.iterator();
 		double time = 0;
-		while(i.hasNext())
-		{
+		while(i.hasNext()){
 			Duration d = i.next();
 			time += d.end - d.start;
 		}
 		
 		// If cummulative duration is greater than threshold, add
-		if(time > this.familiarThreshold)
-		{
+		if(time > this.familiarThreshold){
 			KCliqueCommunityDetection scd = (KCliqueCommunityDetection)peerCD;
 			this.familiarSet.add(peer);
 			this.localCommunity.add(peer);
@@ -203,19 +189,18 @@ public class KCliqueCommunityDetection implements CommunityDetection
 		}
 	}
 
-	public boolean isHostInCommunity(DTNHost h)
-	{
+        @Override
+	public boolean isHostInCommunity(DTNHost h){
 		return this.localCommunity.contains(h);
 	}
 
-	public CommunityDetection replicate()
-	{
+        @Override
+	public CommunityDetection replicate(){
 		return new KCliqueCommunityDetection(this);
 	}
 
-	public Set<DTNHost> getLocalCommunity()
-	{
+        @Override
+	public Set<DTNHost> getLocalCommunity(){
 		return this.localCommunity;
 	}
-	
-}
+	}
