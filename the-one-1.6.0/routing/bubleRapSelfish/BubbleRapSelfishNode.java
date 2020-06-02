@@ -283,6 +283,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         return this.centrality.getLocalCentrality(connHistory, community);
     }
 
+    @Override
     public Set<DTNHost> getLocalCommunity() {
         return this.community.getLocalCommunity();
     }
