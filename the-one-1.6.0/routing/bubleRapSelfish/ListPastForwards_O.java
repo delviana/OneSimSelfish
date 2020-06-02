@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package routing.selfishness;
+package routing.bubleRapSelfish;
 
 import core.DTNHost;
 import routing.community.CommunityDetection;
@@ -12,7 +12,7 @@ import routing.community.CommunityDetection;
  *
  * @author Jarkom
  */
-public class ListPastReceive_I {
+public class ListPastForwards_O {
 
     private final DTNHost senderID;
     private final DTNHost receiverID;
@@ -40,7 +40,7 @@ public class ListPastReceive_I {
         return timeOfContact;
     }
 
-    public ListPastReceive_I(DTNHost senderID, DTNHost receiverID, CommunityDetection senderComm, CommunityDetection receiverComm, Double timeOfContact) {
+    public ListPastForwards_O(DTNHost senderID, DTNHost receiverID, CommunityDetection senderComm, CommunityDetection receiverComm, Double timeOfContact) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.senderComm = senderComm;

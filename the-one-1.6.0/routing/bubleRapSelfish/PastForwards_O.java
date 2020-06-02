@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package routing.selfishness;
+package routing.bubleRapSelfish;
 
 import core.DTNHost;
 import java.util.List;
@@ -14,29 +14,29 @@ import routing.community.Duration;
  *
  * @author Jarkom
  */
-public interface PastReceive_I {
-    
+public interface PastForwards_O {
+
 
 /**
 	 * Called to inform the object that a new connection was made. 
 	 * 
 	 * @param myHost Host to which this CommunityDetection object belongs
 	 * @param peer Host that connected to this host
-	 * @param peerPast_I Instance of CommunityDetection residing at the new peer 
+	 * @param peerPast_O Instance of CommunityDetection residing at the new peer 
 	 */
 
-public void newConnection(DTNHost myHost, DTNHost peer, PastReceive_I peerPast_I);
+public void newConnection(DTNHost myHost, DTNHost peer, PastForwards_O peerPast_O);
 
 /**
 	 * Called to inform the object that a connection was lost.
 	 * 
 	 * @param myHost Host to which this CommunityDetection object belongs
 	 * @param peer Host that is now disconnected from this object
-	 * @param peerPast_I Instance of CommunityDetection residing at the lost peer
+	 * @param peerPast_O Instance of CommunityDetection residing at the lost peer
 	 * @param connHistory Entire connection history between this host and the peer
 	 */
 
-public void ConnectionLost(DTNHost myHost, DTNHost peer, PastReceive_I peerPast_I, List<Duration> connHistory);
+public void ConnectionLost(DTNHost myHost, DTNHost peer, PastForwards_O peerPast_O, List<Duration> connHistory);
 
 /**
 	 * Determines if the given host is a member of the local community of this 
@@ -64,7 +64,7 @@ public Set<DTNHost> getLocalCommunity();
 	 * @return A semantically equal copy of this CommunityDetection object
 	 */
 
-public PastReceive_I replicate();
+public PastForwards_O replicate();
 
 }
 

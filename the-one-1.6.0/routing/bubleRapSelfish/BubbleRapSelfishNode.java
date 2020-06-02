@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package routing.selfishness;
+package routing.bubleRapSelfish;
 
 import core.Connection;
 import core.DTNHost;
@@ -87,10 +87,13 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     @Override
     //pertama kali koneksi dibangun
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
+        
         thisHosts = thisHost;
+        
         //cek baterai level dari kedua node baik thisHost maupun peer apakah diatas thr=misalnya 7000
+        
         if ((getEnergy(thisHost) > 7000) && (getEnergy(peer) > 7000)) {
-            //exchange ListPastForwards_O dan ListPastReceive_I
+          
             CommunityDetection peerCD = this.getOtherDecisionEngine(peer).community;
 
             List<TupleForwardReceive> FR = null;
@@ -100,21 +103,16 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             } else {
                 FR = exChange.get(peer);
             }
+            
             ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
             ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
             FR.add(new TupleForwardReceive(O, I));
             
-//            tuple = new TupleForwardReceive(O, I);
-//            this.exChange.put(pastO, pastI);
-            //exchange = keep only the most recent contact
-            //exhange battery level and metadata of message carried
-            //compute utilities of each message (perceived altruism value of the message
-            //with he regard to the peer.
-            //bila batery level tidak lebih besar dari 7000/threshold, maka            
+                   
         } else {
             //tidak terjadi pertukaran atau Conectiondown
-//            double time = startTimestamps.get(peer);
-//            double etime = SimClock.getTime();
+            double time = startTimestamps.get(peer);
+            double etime = SimClock.getTime();
         }
     }
 
@@ -124,7 +122,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         double etime = SimClock.getTime();
 //        System.out.println(getInitialEnergy(thisHost));
 
-//Menemukan atau membuat daftar Connection History
         List<Duration> history = null;
         if (!connHistory.containsKey(peer)) {
             history = new LinkedList<Duration>();
@@ -133,7 +130,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             history = connHistory.get(peer);
         }
 
-//Menambahkan koneksi ke dalam daftar
         if (etime - time > 0) {
             history.add(new Duration(time, etime));
         }
@@ -152,10 +148,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 
         this.community.newConnection(myHost, peer, de.community);
 
-        //pastO(myHost,peer, this.community, de.community)
-//        this.past_O.newConnection(myHost, peer, de.past_O);
-//        de.past_I.newConnection(peer, myHost, this.past_I);
-    }
+           }
 
     @Override
     public boolean newMessage(Message m) {
@@ -180,31 +173,28 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         DTNHost dest = m.getTo();
         BubbleRapSelfishNode de = getOtherDecisionEngine(otherHost);
 
-        boolean peerInCommunity = de.commumesWithHost(dest); // apakh peer di dlm community nya dest
-        boolean meInCommunity = this.commumesWithHost(dest); // apakh THIS ada di community nya dest
+        boolean peerInCommunity = de.commumesWithHost(dest); 
+        boolean meInCommunity = this.commumesWithHost(dest); 
 
-        if (peerInCommunity && !meInCommunity) // peer is in dest's community, but THIS is not
-        {
+        if (peerInCommunity && !meInCommunity){
             return true;
-        } else if (!peerInCommunity && meInCommunity) // THIS is in dest'community, but peer is not
-        {
+        } else if (!peerInCommunity && meInCommunity){
             return false;
-        } else if (peerInCommunity) // We're both in dest'community
-        {
-            // Forward to the one with the higher local centrality (in dest'community)
+        } else if (peerInCommunity){
+           
 
         }
         Double me = getEnergy(thisHosts);
         Double peer = getEnergy(otherHost);
         System.out.println("me = " + me + " peer = " + peer);
 
-//        System.out.println(getInitialEnergy(dest));
-//        System.out.println(getBuffer(dest));
-//        System.out.println(getEnergy(dest));
-//        System.out.println(getResidualEnergy(dest));
-//        System.out.println(getResidualBuffer(dest));
-//        return ((me > 9000) && (peer > 9000));
-        return true;
+        System.out.println(getInitialEnergy(dest));
+        System.out.println(getBuffer(dest));
+        System.out.println(getEnergy(dest));
+        System.out.println(getResidualEnergy(dest));
+        System.out.println(getResidualBuffer(dest));
+        return ((me > 9000) && (peer > 9000));
+//        return true;
     }
 
     @Override
@@ -217,10 +207,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 
     @Override
     public boolean shouldDeleteOldMessage(Message m, DTNHost hostReportingOld) {
-//        BubbleRapSelfishNode de = this.getOtherDecisionEngine(hostReportingOld);
-//        return de.commumesWithHost(m.getTo())
-//                && !this.commumesWithHost(m.getTo());
-
         return true;
     }
 
@@ -246,7 +232,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     }
 
     private Double getInitialEnergy(DTNHost h) {
-//        System.out.println(getInitialEnergy(h));
+        System.out.println(getInitialEnergy(h));
         return (Double) h.getComBus().getProperty(routing.util.EnergyModel.INIT_ENERGY_S);
     }
 
@@ -272,10 +258,11 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 
     //hitung nilai altruism
     public Double getAltruism(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
+        
         //altruism (N,M) = type (M, o.m * thr (o.b) dijumlahkan dengan type(M, i.m * thr (i.b)
         Double altruism;
         altruism = thisHosts.getAddress() + peer.getAddress() * getEnergy(h);
-        return null;
+        return altruism;
     }
 
     public boolean getAltruismValue(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
