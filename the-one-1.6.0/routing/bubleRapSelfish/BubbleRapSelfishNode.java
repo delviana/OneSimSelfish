@@ -24,7 +24,6 @@ import routing.community.CommunityDetectionEngine;
 import routing.community.Duration;
 import routing.community.SimpleCommunityDetection;
 
-
 /**
  *
  * @author Jarkom
@@ -42,9 +41,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     protected DTNHost thisHosts;
     protected Map<DTNHost, List<TupleForwardReceive>> exChange;
     private double currentEnergy;
-    
-    
-    
 
     public BubbleRapSelfishNode(Settings s) {
         if (s.contains(COMMUNITY_ALG_SETTING)) {
@@ -60,12 +56,10 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         connHistory = new HashMap<DTNHost, List<Duration>>();
         exChange = new HashMap<>();
     }
-       
+
     @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
         thisHosts = thisHost;
-//        double TupleForward_O = startTimestamps.get(peer);
-//        double TupleReceive_I = SimClock.getIntTime();
 
         if ((getEnergy(thisHost) > 7000) && (getEnergy(peer) > 7000)) {
             CommunityDetection peerCD = this.getOtherDecisionEngine(peer).community;
@@ -77,20 +71,14 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             } else {
                 FR = exChange.get(peer);
             }
-     
-            
+
             ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
             ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
-      
-//            if(TupleForward_O - TupleReceive_I > 0){
+
             FR.add(new TupleForwardReceive(O, I));
-        
-            
-        } else {
-//            double time = startTimestamps.get(peer);
-//            double etime = SimClock.getTime();
-        }}
-    
+
+        }
+    }
 
     @Override
     public void connectionDown(DTNHost thisHost, DTNHost peer) {
@@ -105,7 +93,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         } else {
             history = connHistory.get(peer);
         }
-
         if (etime - time > 0) {
             history.add(new Duration(time, etime));
         }
@@ -159,8 +146,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         } else if (peerInCommunity) {
 
         }
-        
-        
+
 //        Double me = getEnergy(thisHosts);
 //        Double peer = getEnergy(otherHost);
 //        System.out.println("me = " + me + " peer = " + peer);
@@ -233,7 +219,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     }
 
     public Double getAltruism(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
-       
+
         Double altruism;
         altruism = thisHosts.getAddress() + peer.getAddress() * getEnergy(h);
 
@@ -246,7 +232,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 //       }
 //        
         return true;
-       
+
     }
 
     protected boolean commumesWithHost(DTNHost dest) {
@@ -291,4 +277,4 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         return null;
     }
 
-   }
+}
