@@ -78,6 +78,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
                 FR = exChange.get(peer);
             }
      
+            
             ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
             ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
             FR.add(new TupleForwardReceive(O, I));
