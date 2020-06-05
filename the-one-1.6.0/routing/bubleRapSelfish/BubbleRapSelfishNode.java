@@ -40,9 +40,10 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     protected int msgTTL;
     protected Centrality centrality;
     protected DTNHost thisHosts;
-
     protected Map<DTNHost, List<TupleForwardReceive>> exChange;
     private double currentEnergy;
+    
+    
     
 
     public BubbleRapSelfishNode(Settings s) {
@@ -59,12 +60,12 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         connHistory = new HashMap<DTNHost, List<Duration>>();
         exChange = new HashMap<>();
     }
-
-    
-    
+       
     @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
         thisHosts = thisHost;
+        double TupleForward_O = startTimestamps.get(peer);
+        double TupleReceive_I = SimClock.getIntTime();
 
         if ((getEnergy(thisHost) > 7000) && (getEnergy(peer) > 7000)) {
             CommunityDetection peerCD = this.getOtherDecisionEngine(peer).community;
@@ -76,11 +77,15 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             } else {
                 FR = exChange.get(peer);
             }
-
+     
             ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
             ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
             FR.add(new TupleForwardReceive(O, I));
-
+ 
+            if(TupleForward_O - TupleReceive_I > 0){
+            FR.add(new TupleForwardReceive(O, I));
+        }
+            
         } else {
 //            double time = startTimestamps.get(peer);
 //            double etime = SimClock.getTime();
@@ -237,12 +242,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 
     public boolean getAltruismValue(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
         return true;
-        //cek apakah nilai altruism yang dihasilkan lebih dari treshold
-        //if (altruism (peer,M) > threshold
-        //        return true
-        //maka forward message
-
-//        getAltruism(peer, m) > getEnergy(peer);
+       
     }
 
     protected boolean commumesWithHost(DTNHost dest) {
