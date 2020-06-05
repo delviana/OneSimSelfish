@@ -58,9 +58,11 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer){}
 
 
+    @Override
     public void doExchangeForNewConnection(Connection con, DTNHost peer)
     {
         DTNHost myHost = con.getOtherNode(peer);
@@ -73,6 +75,7 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public void connectionDown(DTNHost thisHost, DTNHost peer)
     {
         double time = startTimestamps.get(peer);
@@ -100,12 +103,14 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public boolean newMessage(Message m)
     {
         return true;
     }
 
 
+    @Override
     public boolean isFinalDest(Message m, DTNHost aHost)
     {
         return m.getTo() == aHost;
@@ -113,12 +118,14 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public boolean shouldSaveReceivedMessage(Message m, DTNHost thisHost)
     {
         return m.getTo() != thisHost;
     }
 
 
+    @Override
     public boolean shouldSendMessageToHost(Message m, DTNHost otherHost)
     {
         if(m.getTo() == otherHost) return true; // deliver to final destination
@@ -151,6 +158,7 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public boolean shouldDeleteSentMessage(Message m, DTNHost otherHost)
     {
         // delete the message once it is forwarded to the node in the dest'community
@@ -161,6 +169,7 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public boolean shouldDeleteOldMessage(Message m, DTNHost hostReportingOld)
     {
         //BubbleRap de = this.getOtherDecisionEngine(hostReportingOld);
@@ -171,6 +180,7 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
     }
 
 
+    @Override
     public RoutingDecisionEngine replicate()
     {
         return new BubbleRap(this);
@@ -205,6 +215,7 @@ public class BubbleRap implements RoutingDecisionEngine, CommunityDetectionEngin
 
 
     //for REPORT purpose: CommunityDetectionReport
+    @Override
     public Set<DTNHost> getLocalCommunity() {return this.community.getLocalCommunity();}
 
 

@@ -8,7 +8,6 @@ package routing.bubleRapSelfish;
 import core.Connection;
 import core.DTNHost;
 import core.Message;
-import core.ModuleCommunicationListener;
 import core.Settings;
 import core.SimClock;
 import java.util.HashMap;
@@ -23,7 +22,8 @@ import routing.community.Centrality;
 import routing.community.CommunityDetection;
 import routing.community.CommunityDetectionEngine;
 import routing.community.Duration;
-import routing.community.SimpleCommunityDetection;
+import routing.community.KCliqueCommunityDetection;
+
 
 /**
  *
@@ -43,13 +43,13 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 
     protected Map<DTNHost, List<TupleForwardReceive>> exChange;
     private double currentEnergy;
+    
 
     public BubbleRapSelfishNode(Settings s) {
-
         if (s.contains(COMMUNITY_ALG_SETTING)) {
             this.community = (CommunityDetection) s.createIntializedObject(s.getSetting(COMMUNITY_ALG_SETTING));
         } else {
-            this.community = new SimpleCommunityDetection(s);
+            this.community = new KCliqueCommunityDetection(s);
         }
     }
 
@@ -80,8 +80,8 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             FR.add(new TupleForwardReceive(O, I));
 
         } else {
-            double time = startTimestamps.get(peer);
-            double etime = SimClock.getTime();
+//            double time = startTimestamps.get(peer);
+//            double etime = SimClock.getTime();
         }
     }
 
