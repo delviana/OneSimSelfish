@@ -241,6 +241,10 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     }
 
     public boolean getAltruismValue(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
+//       if (m.getHops().contains(getHost())){
+//           
+//       }
+//        
         return true;
        
     }
@@ -281,6 +285,10 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 //        System.out.println(getInitialEnergy(dest));
 
         return true;
+    }
+
+    private Object getHost() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    }
