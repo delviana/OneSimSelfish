@@ -22,7 +22,7 @@ import routing.community.Centrality;
 import routing.community.CommunityDetection;
 import routing.community.CommunityDetectionEngine;
 import routing.community.Duration;
-import routing.community.KCliqueCommunityDetection;
+import routing.community.SimpleCommunityDetection;
 
 
 /**
@@ -49,7 +49,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         if (s.contains(COMMUNITY_ALG_SETTING)) {
             this.community = (CommunityDetection) s.createIntializedObject(s.getSetting(COMMUNITY_ALG_SETTING));
         } else {
-            this.community = new KCliqueCommunityDetection(s);
+            this.community = new SimpleCommunityDetection(s);
         }
     }
 
@@ -60,6 +60,8 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         exChange = new HashMap<>();
     }
 
+    
+    
     @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
         thisHosts = thisHost;
@@ -224,7 +226,8 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     }
 
     public Double getAltruism(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
-        //altruism (N,M) = type (M, o.m * thr (o.b) dijumlahkan dengan type(M, i.m * thr (i.b)
+       
+        h = m.getFrom();
 
         Double altruism;
         altruism = thisHosts.getAddress() + peer.getAddress() * getEnergy(h);
@@ -280,4 +283,4 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         return true;
     }
 
-}
+   }

@@ -57,6 +57,7 @@ public class BufferOccupancyReport extends Report implements UpdateListener {
 		}
 	}
 	
+        @Override
 	public void updated(List<DTNHost> hosts) {
 		if (SimClock.getTime() - lastRecord >= interval) {
 			lastRecord = SimClock.getTime();

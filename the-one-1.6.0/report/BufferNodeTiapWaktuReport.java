@@ -13,11 +13,7 @@ import java.util.*;
 //import java.util.Map;
 
 import core.DTNHost;
-import core.Message;
-import core.MessageListener;
 import core.Settings;
-import core.SimClock;
-import core.SimScenario;
 import core.UpdateListener;
 import routing.DecisionEngineRouter;
 import routing.MessageRouter;
