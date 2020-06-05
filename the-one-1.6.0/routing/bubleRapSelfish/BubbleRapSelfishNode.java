@@ -64,8 +64,8 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
     @Override
     public void connectionUp(DTNHost thisHost, DTNHost peer) {
         thisHosts = thisHost;
-        double TupleForward_O = startTimestamps.get(peer);
-        double TupleReceive_I = SimClock.getIntTime();
+//        double TupleForward_O = startTimestamps.get(peer);
+//        double TupleReceive_I = SimClock.getIntTime();
 
         if ((getEnergy(thisHost) > 7000) && (getEnergy(peer) > 7000)) {
             CommunityDetection peerCD = this.getOtherDecisionEngine(peer).community;
@@ -82,15 +82,15 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
             ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
       
-            if(TupleForward_O - TupleReceive_I > 0){
+//            if(TupleForward_O - TupleReceive_I > 0){
             FR.add(new TupleForwardReceive(O, I));
-        }
+        
             
         } else {
 //            double time = startTimestamps.get(peer);
 //            double etime = SimClock.getTime();
-        }
-    }
+        }}
+    
 
     @Override
     public void connectionDown(DTNHost thisHost, DTNHost peer) {
@@ -275,10 +275,10 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         } else if (peerInCommunity) {
 
         }
-        Double me = de.getEnergy(otherHost);
-        Double peer = this.getEnergy(otherHost);
-        System.out.println("me = " + me + " peer = " + peer);
-        System.out.println(getInitialEnergy(dest));
+//        Double me = de.getEnergy(otherHost);
+//        Double peer = this.getEnergy(otherHost);
+//        System.out.println("me = " + me + " peer = " + peer);
+//        System.out.println(getInitialEnergy(dest));
 
         return true;
     }
