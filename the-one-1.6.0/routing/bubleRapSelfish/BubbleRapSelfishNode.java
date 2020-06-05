@@ -81,8 +81,7 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
             
             ListPastForwards_O O = new ListPastForwards_O(thisHost, peer, this.community, peerCD, SimClock.getTime());
             ListPastReceive_I I = new ListPastReceive_I(thisHost, peer, this.community, peerCD, SimClock.getTime());
-            FR.add(new TupleForwardReceive(O, I));
- 
+      
             if(TupleForward_O - TupleReceive_I > 0){
             FR.add(new TupleForwardReceive(O, I));
         }
@@ -160,17 +159,19 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
         } else if (peerInCommunity) {
 
         }
-        Double me = getEnergy(thisHosts);
-        Double peer = getEnergy(otherHost);
-        System.out.println("me = " + me + " peer = " + peer);
-
-        System.out.println(getInitialEnergy(dest));
-        System.out.println(getBuffer(dest));
-        System.out.println(getEnergy(dest));
-        System.out.println(getResidualEnergy(dest));
-        System.out.println(getResidualBuffer(dest));
-        return ((me > 9000) && (peer > 9000));
-//        return true;
+        
+        
+//        Double me = getEnergy(thisHosts);
+//        Double peer = getEnergy(otherHost);
+//        System.out.println("me = " + me + " peer = " + peer);
+//
+//        System.out.println(getInitialEnergy(dest));
+//        System.out.println(getBuffer(dest));
+//        System.out.println(getEnergy(dest));
+//        System.out.println(getResidualEnergy(dest));
+//        System.out.println(getResidualBuffer(dest));
+//        return ((me > 9000) && (peer > 9000));
+        return true;
     }
 
     @Override
@@ -233,8 +234,6 @@ public class BubbleRapSelfishNode implements RoutingDecisionEngine, CommunityDet
 
     public Double getAltruism(DTNHost h, Message m, DTNHost peer, Map<ListPastForwards_O, ListPastReceive_I> exChange) {
        
-        h = m.getFrom();
-
         Double altruism;
         altruism = thisHosts.getAddress() + peer.getAddress() * getEnergy(h);
 
